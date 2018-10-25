@@ -1,11 +1,15 @@
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Member;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Base64;
 
 /** TCP/IP Server Socket 
  *  Network Programming
@@ -18,14 +22,14 @@ public class JavaSocketServer {
 	private static ServerSocket serverSocket;
 	private static Socket socket;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException {
 		ipAddress();
 		
 		try {
 			
 			// Instantiate ServerSocket Class
 			serverSocket = new ServerSocket();
-			serverSocket.bind(new InetSocketAddress(9507));
+			serverSocket.bind(new InetSocketAddress(9512));
 			
 						
 			// Connection Wait for Multiple Client 
@@ -33,10 +37,21 @@ public class JavaSocketServer {
 	
 				socket = serverSocket.accept();
 				InetSocketAddress isa = (InetSocketAddress) socket.getRemoteSocketAddress();
-				System.out.println("Connection Accepted! Client  [" + isa.getHostName() + ":" + isa.getPort() + "]");
+				System.out.println("Connection 연결성공 [" + isa.getHostName() + ":" + isa.getPort() + "]");
 			
 				InputStream is = socket.getInputStream();
 				OutputStream os = socket.getOutputStream();
+				
+	/*			 String base64Member = "...생략";
+				    byte[] serializedMember = Base64.getDecoder().decode(base64Member);
+				    try (ByteArrayInputStream bais = new ByteArrayInputStream(serializedMember)) {
+				        try (ObjectInputStream ois = new ObjectInputStream(bais)) {
+				            // 역직렬화된 Member 객체를 읽어온다.
+				            Object objectMember = ois.readObject();
+				            Member member = (Member) objectMember;
+				            System.out.println(member);
+				        }
+				    }*/
 				
 				byte[] byteArr = new byte[512];
 				String msg = null;
