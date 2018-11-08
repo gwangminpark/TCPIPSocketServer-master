@@ -1,4 +1,4 @@
-package com.kitkat.android.tcpipsocketserver;
+package com.kitkat.android.tcpipsocketserver.model;
 
 import java.io.Serializable;
 
@@ -18,6 +18,6 @@ public class Member implements Serializable {
     }
     @Override
     public String toString() {
-        return String.format("Member{id='%s', pw='%s'}", id, pw);
+        return String.format("Member{id='%s', pdsfsdfw='%s'}", id, pw);
     }
 }

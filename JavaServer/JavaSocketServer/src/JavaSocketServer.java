@@ -1,57 +1,34 @@
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Member;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Base64;
 
-/** TCP/IP Server Socket 
- *  Network Programming
- *	
- * @author Kitkat
- *
- */
 public class JavaSocketServer {
-	private static final String Naver = "www.naver.com";
+
 	private static ServerSocket serverSocket;
 	private static Socket socket;
 	
-	public static void main(String[] args) throws ClassNotFoundException {
+	public static void main(String[] args) {
 		ipAddress();
 		
 		try {
-			
 			// Instantiate ServerSocket Class
 			serverSocket = new ServerSocket();
-			serverSocket.bind(new InetSocketAddress(9512));
+			serverSocket.bind(new InetSocketAddress(5013));
 			
-						
 			// Connection Wait for Multiple Client 
 			while(true) {
-	
+				System.out.println("Connetion wait..");
 				socket = serverSocket.accept();
 				InetSocketAddress isa = (InetSocketAddress) socket.getRemoteSocketAddress();
-				System.out.println("Connection 연결성공 [" + isa.getHostName() + ":" + isa.getPort() + "]");
+				System.out.println("Connection Accepted! Client  [" + isa.getHostName() + ":" + isa.getPort() + "]");
 			
 				InputStream is = socket.getInputStream();
 				OutputStream os = socket.getOutputStream();
-				
-	/*			 String base64Member = "...생략";
-				    byte[] serializedMember = Base64.getDecoder().decode(base64Member);
-				    try (ByteArrayInputStream bais = new ByteArrayInputStream(serializedMember)) {
-				        try (ObjectInputStream ois = new ObjectInputStream(bais)) {
-				            // 역직렬화된 Member 객체를 읽어온다.
-				            Object objectMember = ois.readObject();
-				            Member member = (Member) objectMember;
-				            System.out.println(member);
-				        }
-				    }*/
 				
 				byte[] byteArr = new byte[512];
 				String msg = null;
@@ -62,18 +39,17 @@ public class JavaSocketServer {
 					throw new IOException();
 				
 				msg = new String(byteArr, 0, readByteCount, "UTF-8");
-
 				System.out.println("Message : " + msg);
 				
-				msg = "socket test!!!!";
+				msg = "Hello Cliensst";
 				byteArr = msg.getBytes("UTF-8");
 				os.write(byteArr);
-		
-				
+				System.out.println("Data Transmitted OK!");
 				os.flush();
-				is.close();
-				os.close();
-				socket.close();
+				
+				//is.close();
+				//os.close();
+				//socket.close();
 			}
 			
 		} catch (IOException e) {
@@ -82,14 +58,6 @@ public class JavaSocketServer {
 			try { socket.close(); } catch (IOException e1) { e1.printStackTrace(); }
 		}
 		
-		if(!serverSocket.isClosed()) {
-			try {
-				serverSocket.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 	
 	public static void ipAddress() {
@@ -97,11 +65,6 @@ public class JavaSocketServer {
 			
 			InetAddress inetAddress = InetAddress.getLocalHost();
 			System.out.println("LocalHost IP Address : " + inetAddress.getHostAddress());
-			
-			InetAddress[] iaArr = InetAddress.getAllByName(Naver);
-			
-			for(InetAddress ia : iaArr) 
-				System.out.println(Naver + " IP Address : " + ia.getHostAddress());
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
