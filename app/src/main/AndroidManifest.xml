@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kitkat.android.tcpipsocketserver">
+    package="com.insungdata.android.sockettest">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:name="com.insungdata.android.sockettest.activity.MyApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+        <activity android:name="com.insungdata.android.sockettest.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,7 +22,9 @@
         </activity>
 
         <service
-            android:name=".app.SocketService" />
+            android:name="com.insungdata.android.sockettest.app.SocketService" />
+
+        
     </application>
 
 </manifest>

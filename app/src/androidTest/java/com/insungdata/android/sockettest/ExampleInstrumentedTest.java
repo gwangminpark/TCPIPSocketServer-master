@@ -1,4 +1,4 @@
-package com.kitkat.android.tcpipsocketserver;
+package com.insungdata.android.sockettest;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

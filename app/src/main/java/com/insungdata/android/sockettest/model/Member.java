@@ -1,4 +1,4 @@
-package com.kitkat.android.tcpipsocketserver.model;
+package com.insungdata.android.sockettest.model;
 
 import java.io.Serializable;
 

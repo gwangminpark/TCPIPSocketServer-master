@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.kitkat.android.tcpipsocketserver.activity.MainActivity">
+    tools:context="com.insungdata.android.sockettest.activity.MainActivity">
 
     <EditText
         android:id="@+id/id"
@@ -36,40 +36,42 @@
         android:inputType="textPersonName"
         android:text="" />
 
-    <Button
-        android:id="@+id/buttonConnect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonSubmit"
-        android:layout_alignBottom="@+id/buttonSubmit"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="58dp"
-        android:layout_marginStart="58dp"
-        android:text="소켓연결"
-        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/buttonSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/id"
-        android:layout_marginLeft="50dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="145dp"
-        android:layout_toEndOf="@+id/buttonConnect"
-        android:layout_toRightOf="@+id/buttonConnect"
+        android:layout_alignBaseline="@+id/buttonConnect"
+        android:layout_alignBottom="@+id/buttonConnect"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="55dp"
+        android:layout_marginRight="55dp"
         android:text="서버로전송" />
 
     <TextView
         android:id="@+id/textViewMsg"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_above="@+id/buttonConnect"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/buttonConnect"
-        android:layout_marginTop="28dp"
+        android:layout_marginBottom="52dp"
         android:text="TextView"
         android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/buttonConnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="42dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginStart="28dp"
+        android:text="연결상태"
+        android:textAllCaps="false" />
+
 </RelativeLayout>
 </layout>
