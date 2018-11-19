@@ -1,5 +1,6 @@
 package com.insungdata.android.sockettest.app;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -31,13 +32,13 @@ public class SocketService extends Service {
     private final int HANDLER_SOCKETRE_COUNT = 1002;
     private final int HANDLER_NETWORK_ERROR = 1003;
     private final int HANDLER_NETWORK_OK = 1004;
-    private final int HANDLER_DATA_ERROR = 1005;
+
 
     private static final String TAG = SocketService.class.getSimpleName();
     private Socket mSocket;
     private InputStream mInputStream;
     private OutputStream mOutputStream;
-    private int mSocketRecount =0;
+    private int mSocketRecount = 0;
     private String mMessage;
     private IBinder mBinder = new MyBinder();
 
@@ -97,7 +98,6 @@ public class SocketService extends Service {
     }
 
     public void onSocketReset() {
-        mSocketRecount++;
         try {
             if (mOutputStream != null) {
                 mOutputStream.close();
@@ -147,12 +147,7 @@ public class SocketService extends Service {
             if (result) {
                 handler.sendEmptyMessage( HANDLER_NETWORK_OK );
             } else {
-                Intent intent = new Intent( MainActivity.INTENT_FILTER );
-                intent.putExtra( MyApplication.networkIntentValue, false );
-                sendBroadcast( intent );
-
-                onSocketReset();
-                new SocketConnect().execute();
+                handler.sendEmptyMessage( HANDLER_SOCKETRE_COUNT );
                 // 소켓 연결이 되지 않았기 때문에 다시 연결해주는 루틴을 만들어 호출하자.
             }
         }
@@ -164,19 +159,60 @@ public class SocketService extends Service {
         }
     }
 
+    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
-            if (msg.what == HANDLER_SOCKET_CONNECTED ) {
+
+            switch (msg.what) {
+
+                case HANDLER_SOCKET_CONNECTED:
+                    onSocketReset();
+                    new SocketConnect().execute();
+                    break;
+
+                case HANDLER_SOCKETRE_COUNT:
+                    if (mSocketRecount >= 5) {
+                        mSocketRecount = 0;
+                        Toast.makeText( SocketService.this, "프로그램 종료 후 인터넷을 확인 후 연결해주세요.", Toast.LENGTH_LONG ).show();
+                    } else {
+                        ++mSocketRecount;
+                        Intent intent = new Intent( MainActivity.INTENT_FILTER );
+                        intent.putExtra( MyApplication.networkIntentValue, false );
+                        sendBroadcast( intent );
+                        Toast.makeText( SocketService.this, "재접속 카운트" + mSocketRecount + "회", Toast.LENGTH_SHORT ).show();
+                    }
+                    break;
+
+                case HANDLER_NETWORK_ERROR:
+                    //에러가 있다는것을 액티비티로 전송
+                    Intent intent = new Intent( MainActivity.INTENT_FILTER );
+                    intent.putExtra( MyApplication.networkIntentValue, false );
+                    sendBroadcast( intent );
+                    break;
+
+                case HANDLER_NETWORK_OK:
+                    // 연결됐다는 것을 알려줘야 하는 부분(액티비티) 로 결과를 전송
+                    Intent intent2 = new Intent( MainActivity.INTENT_FILTER );
+                    intent2.putExtra( MyApplication.networkIntentValue, true );
+                    sendBroadcast( intent2 );
+
+                    break;
+            }
+
+
+          /*  if (msg.what == HANDLER_SOCKET_CONNECTED ) {
                 onSocketReset();
                 new SocketConnect().execute();
 
             } else if (msg.what == HANDLER_SOCKETRE_COUNT) {
-
                 if (mSocketRecount >= 5) {
-                    ++mSocketRecount;                //SocketConnect에서 예외발생이 5회이상일때 안보내주기 위해서 값을 추가한다.
+                    mSocketRecount=0;
                     Toast.makeText( SocketService.this, "프로그램 종료 후 인터넷을 확인 후 연결해주세요.", Toast.LENGTH_LONG ).show();
                 } else {
                     ++mSocketRecount;
+                    Intent intent = new Intent( MainActivity.INTENT_FILTER );
+                    intent.putExtra( MyApplication.networkIntentValue, false );
+                    sendBroadcast( intent );
                     Toast.makeText( SocketService.this, "재접속 카운트" + mSocketRecount + "회", Toast.LENGTH_SHORT ).show();
                 }
 
@@ -194,9 +230,7 @@ public class SocketService extends Service {
                 intent.putExtra( MyApplication.networkIntentValue, true );
                 sendBroadcast( intent );
 
-            } else if (msg.what == HANDLER_DATA_ERROR) {
-
-            }
+            }*/
         }
 
     };

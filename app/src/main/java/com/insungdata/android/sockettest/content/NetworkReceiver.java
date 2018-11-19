@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.insungdata.android.sockettest.activity.MainActivity;
 import com.insungdata.android.sockettest.activity.MyApplication;
+import com.insungdata.android.sockettest.app.SocketService;
 
 /**
  * Created by user on 2018-11-09.
@@ -17,8 +18,8 @@ import com.insungdata.android.sockettest.activity.MyApplication;
 
 @SuppressLint("NewApi")
 public class NetworkReceiver extends BroadcastReceiver implements ConnectivityManager.OnNetworkActiveListener {
-    String action;
-    Intent intent;
+    static  String action="test";
+    private SocketService socket;
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -30,7 +31,9 @@ public class NetworkReceiver extends BroadcastReceiver implements ConnectivityMa
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
 
         if(action.equals(ConnectivityManager.CONNECTIVITY_ACTION)){
-            Log.d("TestReceiver","네트워크변경 감지 "+activeNetwork);
+
+
+            Log.d("TestReceiver","네트워크변경 감지 ");
             /*
             네트워크 변화가 생길때마다 이쪽으로 들어온다.
             */
